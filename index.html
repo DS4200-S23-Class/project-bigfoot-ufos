@@ -16,12 +16,28 @@
 
     <div>
         <h2>Motivation</h2>
-        TODO: Add motivation / use case here 
+        <p>
+            Voluntary reports of UFO and Bigfoot sightings can be submitted and found online for many to be seen. Examining these reports may lead to new insights. We want to answer why certain people truly believe they have seen something that could be fake? Our homepage includes three visualizations to answer these. Where do these ideas and belief systems come from, do certain areas see large amounts of reported sightings? UFOs can be spotted anywhere in the sky, but do Bigfoot sightings only happen in certain areas? These visualizations are used to examine the psyche of the people submitting their findings. To determine this, we look at where the sighting took place, time of day, time of year, and the report given along with their sighting. 
+
+            We will also ask questions on finding any correlation between physical and environmental attributes on a specific group of sightings. We intend to answer these in our other two smaller visualizations in our Bigfoot and UFO tabs. Looking at these factors like the temperature during the sighting, shape of the seen UFO, or even looking at the phase of the moon during the Bigfoot sighting, we may end up finding results that are statistically significant. 
+
+        </p>
     </div>
 
     <div>
         <h2>Background</h2>
-        TODO: Add link to report, demo video, link to data etc. here  
+        TODO: Add link to report, demo video, link to data etc. here
+
+        <p>
+            <h3> Bigfoot data</h3>
+            The Bigfoot data came from the Bigfoot Field Researchers Organization (BFRO), and was accessed via <a href=https://data.world/timothyrenner/bfro-sightings-data>data.world.com</a> . Specifically, we accessed the bfro_locations.csv and bfro_reports_geocoded.csv files. Together, these files contain around 5,000 unique reports on bigfoot sightings as well as times of the events, point location data, and weather data scraped using the Dark Sky API. The original locations data and geocoded data contained 4,250 rows and 6 columns and 5,021 rows and 29 columns, respectively.We then cleaned the data to ignore reports missing data on latitude/longitude or date and dropped columns unnecessary to our analysis such as title and geohash. We then further abstracted the data by filtering for reports made after 2010. Our final data contained 964 rows and 16 columns with each row representing a unique report and the attributes surrounding that event.
+
+            <h3> UFO data</h3>
+            The UFO data originated from the National UFO Reporting Center, then was accessed via <a href=https://data.world/timothyrenner/ufo-sightings/workspace/file?filename=nuforc_reports.csv >data.world.com</a> . It had 14 columns and 141,285 rows before cleaning. Each row in this file is a recorded UFO sighting and contains information such as coordinates, summary, and shape of the object seen. This data was further cleared up to contain 1000 rows and 10 columns from the table to be able to visualize by d3 on the website. Our method selects rows at random, with each row having an equal probability of being selected. By selecting a subset of the data in this way, we can create a smaller dataset that is still representative of the larger dataset, allowing us to visualize trends and patterns in the data in a more manageable way to the user. For columns, we dropped the report time, report link, summary, and country for a final width of seven columns.
+
+            <h3>Biases & Considerations</h3>
+            There are biases that come into consideration when accessing this data. Without any concrete evidence of the existence of Bigfoot and UFOs, we are unsure if these are sightings in which people saw something, or if people are just creating a fictional story. Many planets, stars, or aircraft could be mistaken for UFOs, and different animals or people can be mistaken for Bigfoot. However, this data is self-reported as people submit their sightings, so there are limited privacy concerns unless a reporter violates another person's privacy when submitting a sighting. Both self-reporting forms on the BFRO and the UFO sites state that all legitimate reports will be looked at by someone in the company, so this means that there is a second check after someone submits a report. 
+        </p>  
     </div>
 
     <div>
