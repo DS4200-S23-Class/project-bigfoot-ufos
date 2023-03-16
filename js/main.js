@@ -1,6 +1,6 @@
 // variables 
 const MAP_WIDTH = 500
-const MAP_HEIGHT = 500
+const MAP_HEIGHT = 300
 
 const MARGINS = {left: 10, right: 10, top: 10, bottom: 10};
 
@@ -41,19 +41,21 @@ Promise.all([d3.csv("data/bigfoot.csv"),
 
 	const SCALE_LAT = d3.scaleLinear()
 							.domain([MIN_LAT, MAX_LAT])
-							.range([0, MAP_WIDTH - MARGINS.left - MARGINS.right]);
+							.range([MAP_HEIGHT  - MARGINS.bottom, MARGINS.top])
+							;
 
 	const SCALE_LONG = d3.scaleLinear()
 							.domain([MIN_LONG, MAX_LONG])
-							.range([MAP_HEIGHT - MARGINS.top - MARGINS.bottom, 0]);
+							.range([MARGINS.left, MAP_WIDTH - MARGINS.right])
+							;
 
 	let bfCoords = MAP.selectAll("coords")
 							.data(files[0])
 							.enter()
 							.append("circle")
 								.attr("class", "bf-coords")
-								.attr("cx", (d) => {return SCALE_LAT(d.latitude) + MARGINS.left})
-								.attr("cy", (d) => {return SCALE_LONG(d.longitude) + MARGINS.top})
+								.attr("cx", (d) => {return SCALE_LONG(d.longitude) + MARGINS.top})
+								.attr("cy", (d) => {return SCALE_LAT(d.latitude) + MARGINS.left})
 								.attr("r", 5);
 
 
@@ -62,8 +64,8 @@ Promise.all([d3.csv("data/bigfoot.csv"),
 							.enter()
 							.append("circle")
 								.attr("class", "ufo-coords")
-								.attr("cx", (d) => {return SCALE_LAT(d.city_latitude) + MARGINS.left})
-								.attr("cy", (d) => {return SCALE_LONG(d.city_longitude) + MARGINS.top})
+								.attr("cx", (d) => {return SCALE_LONG(d.city_longitude) + MARGINS.top})
+								.attr("cy", (d) => {return SCALE_LAT(d.city_latitude) + MARGINS.left})
 								.attr("r", 5);
 
 
