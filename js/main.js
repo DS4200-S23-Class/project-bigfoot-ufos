@@ -25,17 +25,17 @@ Promise.all([d3.csv("data/bigfoot.csv"),
 	console.log("ufos data" + files[1].slice(0, 10));
 
 	// scaling 
-	const MAX_LAT = d3.max([d3.max(files[0], (d) => {return parseInt(d.latitude)}), 
-					d3.max(files[1], (d) => {return parseInt(d.city_latitude)})]);
+	const MAX_LAT = d3.max([d3.max(files[0], (d) => {return parseFloat(d.latitude)}), 
+					d3.max(files[1], (d) => {return parseFloat(d.city_latitude)})]);
 
-	const MAX_LONG = d3.max([d3.max(files[0], (d) => {return parseInt(d.longitude)}), 
-					 d3.max(files[1], (d) => {return parseInt(d.city_longitude)})]);
+	const MAX_LONG = d3.max([d3.max(files[0], (d) => {return parseFloat(d.longitude)}), 
+					 d3.max(files[1], (d) => {return parseFloat(d.city_longitude)})]);
 
-	const MIN_LAT = d3.min([d3.min(files[0], (d) => {return parseInt(d.latitude)}), 
-					d3.min(files[1], (d) => {return parseInt(d.city_latitude)})]);
+	const MIN_LAT = d3.min([d3.min(files[0], (d) => {return parseFloat(d.latitude)}), 
+					d3.min(files[1], (d) => {return parseFloat(d.city_latitude)})]);
 
-	const MIN_LONG = d3.min([d3.min(files[0], (d) => {return parseInt(d.longitude)}), 
-					 d3.min(files[1], (d) => {return parseInt(d.city_longitude)})]);
+	const MIN_LONG = d3.min([d3.min(files[0], (d) => {return parseFloat(d.longitude)}), 
+					 d3.min(files[1], (d) => {return parseFloat(d.city_longitude)})]);
 
 	console.log(MAP_HEIGHT, MAP_WIDTH);
 
@@ -70,3 +70,13 @@ Promise.all([d3.csv("data/bigfoot.csv"),
 
 
 });
+
+let svg = d3.select("#legend")
+    .attr("width", 100)
+    .attr("height", 50);
+
+// Handmade legend: https://d3-graph-gallery.com/graph/custom_legend.html
+svg.append("circle").attr("cx", 15).attr("cy", 25).attr("r", 6).style("fill", "orange");
+svg.append("circle").attr("cx", 15).attr("cy", 40).attr("r", 6).style("fill", "silver");
+svg.append("text").attr("x", 25).attr("y", 10).text("Bigfoot").style("font-size", "15px").attr("alignment-baseline","middle").attr("text-anchor", "start");
+svg.append("text").attr("x", 25).attr("y", 40).text("Alien").style("font-size", "15px").attr("alignment-baseline","middle").attr("text-anchor", "start");

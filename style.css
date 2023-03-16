@@ -6,8 +6,14 @@ h1 {
     text-align: center;
 }
 
+/* flexboxes for diff parts of the vis */
+.visualization {
+    display:flex;
+}
 
-
+#legend {
+    width: 10%;
+}
 #map {
     background-image: url(usmap.gif);
     background-repeat: no-repeat;
