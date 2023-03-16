@@ -1,8 +1,8 @@
 // variables 
-const MAP_WIDTH = 500
-const MAP_HEIGHT = 300
+const MAP_WIDTH = 1000
+const MAP_HEIGHT = 600
 
-const MARGINS = {left: 10, right: 10, top: 10, bottom: 10};
+const MARGINS = {left: 50, right: 50, top: 50, bottom: 50};
 
 // ufo: x and y are going to be city_latitude & city_longitude
 // bigfoot: x and y are latitude & longitude
