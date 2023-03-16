@@ -6,17 +6,20 @@ h1 {
     text-align: center;
 }
 
+
+
 #map {
-    width: 50%;
-    height: 50%;
+    background-image: url(usmap.gif);
+    background-repeat: no-repeat;
 }
+
 
 .bf-coords {
     fill: orange;
-    opacity: 0.4;
+    opacity: .7;
 }
 
 .ufo-coords {
-    fill: steelblue;
-    opacity: 0.4;
+    fill: silver;
+    opacity: .7;
 }
