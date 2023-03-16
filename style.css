@@ -13,8 +13,10 @@ h1 {
 
 .bf-coords {
     fill: orange;
+    opacity: 0.4;
 }
 
 .ufo-coords {
-    fill: silver;
+    fill: steelblue;
+    opacity: 0.4;
 }
