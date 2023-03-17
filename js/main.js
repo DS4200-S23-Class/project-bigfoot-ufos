@@ -1,22 +1,11 @@
-// variables 
-const MAP_WIDTH = 638
-const MAP_HEIGHT = 354
-
-const MARGINS = {left: 3, right: 25, top:6, bottom: 18};
-
 // ufo: x and y are going to be city_latitude & city_longitude
 // bigfoot: x and y are latitude & longitude
-const MAP = 
-d3.select("#map")
-	.append("svg")
-		.attr("width", MAP_WIDTH)
-		.attr("height", MAP_HEIGHT)
-		.attr("class", "frame");
 
 // reads the data files 
 Promise.all([d3.csv("data/bigfoot.csv"),
 			 d3.csv("data/ufos.csv"), 
 			 ]).then((files) => {
+
 	// files [0]: bigfoot
 	// files [1]: ufos
 
@@ -24,59 +13,47 @@ Promise.all([d3.csv("data/bigfoot.csv"),
 	console.log("bigfoot data" + files[0].slice(0, 10)); 
 	console.log("ufos data" + files[1].slice(0, 10));
 
-	// scaling 
-	const MAX_LAT = d3.max([d3.max(files[0], (d) => {return parseFloat(d.latitude)}), 
-					d3.max(files[1], (d) => {return parseFloat(d.city_latitude)})]);
+	// initialize the map; center around usa
+	let mymap = L
+	  .map("map")
+	  .setView([38, -97], 4);
 
-	const MAX_LONG = d3.max([d3.max(files[0], (d) => {return parseFloat(d.longitude)}), 
-					 d3.max(files[1], (d) => {return parseFloat(d.city_longitude)})]);
+	// map background 
 
-	const MIN_LAT = d3.min([d3.min(files[0], (d) => {return parseFloat(d.latitude)}), 
-					d3.min(files[1], (d) => {return parseFloat(d.city_latitude)})]);
+	// opt 1
+	// L.tileLayer(
+	//     'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+	//     attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a>',
+	//     maxZoom: 10,
+	//     }).addTo(mymap);
 
-	const MIN_LONG = d3.min([d3.min(files[0], (d) => {return parseFloat(d.longitude)}), 
-					 d3.min(files[1], (d) => {return parseFloat(d.city_longitude)})]);
+	// opt 2
+	// L.tileLayer('https://tiles.stadiamaps.com/tiles/alidade_smooth/{z}/{x}/{y}{r}.png', {
+	// 	maxZoom: 20,
+	// 	attribution: '&copy; <a href="https://stadiamaps.com/">Stadia Maps</a>, &copy; <a href="https://openmaptiles.org/">OpenMapTiles</a> &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors'
+	// 	}).addTo(mymap);
 
-	console.log(MAP_HEIGHT, MAP_WIDTH);
+	// opt 3
+	L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer/tile/{z}/{y}/{x}', {
+		attribution: 'Tiles &copy; Esri &mdash; Esri, DeLorme, NAVTEQ, TomTom, Intermap, iPC, USGS, FAO, NPS, NRCAN, GeoBase, Kadaster NL, Ordnance Survey, Esri Japan, METI, Esri China (Hong Kong), and the GIS User Community'
+	}).addTo(mymap);
 
-	const SCALE_LAT = d3.scaleLinear()
-							.domain([MIN_LAT, MAX_LAT])
-							.range([MAP_HEIGHT  - MARGINS.bottom, MARGINS.top])
-							;
+	for (let key in files[0]) {
+		try {
+			L.circleMarker([files[0][key].latitude, files[0][key].longitude], {
+				radius: 8,
+				className: "bf-coords"
+			}).addTo(mymap);
+		} catch (error) {}
+	}
 
-	const SCALE_LONG = d3.scaleLinear()
-							.domain([MIN_LONG, MAX_LONG])
-							.range([MARGINS.left, MAP_WIDTH - MARGINS.right])
-							;
-
-	let bfCoords = MAP.selectAll("coords")
-							.data(files[0])
-							.enter()
-							.append("circle")
-								.attr("class", "bf-coords")
-								.attr("cx", (d) => {return SCALE_LONG(d.longitude) + MARGINS.left})
-								.attr("cy", (d) => {return SCALE_LAT(d.latitude) + MARGINS.top})
-								.attr("r", 3);
-
-
-	let ufoCoords = MAP.selectAll("coords")
-							.data(files[1])
-							.enter()
-							.append("circle")
-								.attr("class", "ufo-coords")
-								.attr("cx", (d) => {return SCALE_LONG(d.city_longitude) + MARGINS.left})
-								.attr("cy", (d) => {return SCALE_LAT(d.city_latitude) + MARGINS.top})
-								.attr("r", 3);
-
+	for (let key in files[1]) {
+		try {
+			L.circleMarker([files[1][key].city_latitude, files[1][key].city_longitude], {
+				radius: 8,
+				className: "ufo-coords"
+			}).addTo(mymap);
+		} catch (error) {}
+	}
 
 });
-
-//let svg = d3.select("#legend")
-  //  .attr("width", 100)
-  //  .attr("height", 50);
-
-// Handmade legend: https://d3-graph-gallery.com/graph/custom_legend.html
-svg.append("circle").attr("cx", 15).attr("cy", 25).attr("r", 6).style("fill", "orange");
-svg.append("circle").attr("cx", 15).attr("cy", 40).attr("r", 6).style("fill", "silver");
-svg.append("text").attr("x", 25).attr("y", 10).text("Bigfoot").style("font-size", "15px").attr("alignment-baseline","middle").attr("text-anchor", "start");
-svg.append("text").attr("x", 25).attr("y", 40).text("Alien").style("font-size", "15px").attr("alignment-baseline","middle").attr("text-anchor", "start");
