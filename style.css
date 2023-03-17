@@ -8,13 +8,26 @@ h1 {
 
 /* flexboxes for diff parts of the vis */
 .visualization {
-    display:flex;
+    max-height: 100%;
+	max-width: 100%;
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	align-items: left;
 }
 
 #legend {
     width: 10%;
 }
+
 #map {
+    max-width: 75%;
+    width: 750px;
+    height: 450px;
+}
+
+#vis1 {
+    max-width: 25%;
     width: 750px;
     height: 450px;
 }
@@ -29,4 +42,8 @@ h1 {
     fill: steelblue;
     stroke: none;
     fill-opacity: 0.5;
+}
+
+.rect{
+    fill: black;
 }
