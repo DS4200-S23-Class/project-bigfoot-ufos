@@ -2,7 +2,7 @@
 const MAP_WIDTH = 638
 const MAP_HEIGHT = 354
 
-const MARGINS = {left: 8, right: 25, top:13, bottom: 23};
+const MARGINS = {left: 3, right: 25, top:6, bottom: 18};
 
 // ufo: x and y are going to be city_latitude & city_longitude
 // bigfoot: x and y are latitude & longitude
@@ -71,9 +71,9 @@ Promise.all([d3.csv("data/bigfoot.csv"),
 
 });
 
-let svg = d3.select("#legend")
-    .attr("width", 100)
-    .attr("height", 50);
+//let svg = d3.select("#legend")
+  //  .attr("width", 100)
+  //  .attr("height", 50);
 
 // Handmade legend: https://d3-graph-gallery.com/graph/custom_legend.html
 svg.append("circle").attr("cx", 15).attr("cy", 25).attr("r", 6).style("fill", "orange");
