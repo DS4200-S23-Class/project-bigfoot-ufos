@@ -41,7 +41,7 @@ Promise.all([d3.csv("data/bigfoot.csv"),
 	for (let key in files[0]) {
 		try {
 			L.circleMarker([files[0][key].latitude, files[0][key].longitude], {
-				radius: 8,
+				radius: 3,
 				className: "bf-coords"
 			}).addTo(mymap);
 		} catch (error) {}
@@ -50,10 +50,80 @@ Promise.all([d3.csv("data/bigfoot.csv"),
 	for (let key in files[1]) {
 		try {
 			L.circleMarker([files[1][key].city_latitude, files[1][key].city_longitude], {
-				radius: 8,
+				radius: 3,
 				className: "ufo-coords"
 			}).addTo(mymap);
 		} catch (error) {}
 	}
 
 });
+
+
+
+
+const FRAME = 
+d3.select("#vis1")
+    .append("svg")
+        .attr("width", 750)
+        .attr("height", 450)
+        .attr("id", "svg2");
+
+// Load the CSV file
+// reads the data files 
+Promise.all([d3.csv("data/bigfoot.csv"),
+			 d3.csv("data/ufos.csv"), 
+			 ]).then((files) => {
+
+	// files [0]: bigfoot
+	// files [1]: ufos
+
+	// Perform the frequency count on the desired column
+	var count = d3.rollup(files [1], v => v.length, d => d.season);
+	var count2 = d3.rollup(files [0], v => v.length, d => d.season);
+
+	var set1 = count.values();
+	var set2 = count2.values();
+	console.log(count.values())
+	var trace1 = {
+		x: ['Spring', 'Summer', 'Fall', 'Winter'],
+		y: Array.from(set1),
+		//set1,
+		name: 'UFO',
+		type: 'bar'
+	  };
+	  var trace2 = {
+		x: ['Spring', 'Summer', 'Fall', 'Winter'],
+		y: Array.from(set2),
+		//set2,
+		name: 'bf',
+		type: 'bar'
+	  };
+	var data = [trace1,trace2];
+	var layout = {barmode: 'group'};
+	
+	// Create the bar chart
+	//let svg = d3.select("#svg2");
+	Plotly.newPlot('vis1', data, layout);
+
+	// svg = svg.selectAll("rect")
+	//   .data(count)
+	//   .enter()
+	//   .append("rect")
+	//   .attr("x", function(d, i) { return i * 50; })
+	//   .attr("y", function(d) { return svg.attr("height") - d[1]; })
+	//   .attr("width", 20)
+	//   .attr("height", function(d) { return d[1];})
+	//   .attr("fill", "steelblue");
+
+	//   svg = svg.selectAll("rect")
+	//   .data(count2)
+	//   .enter()
+	//   .append("rect")
+	//   .attr("x", function(d, i) { return i * 50 + 20; })
+	//   .attr("y", function(d) { return svg.attr("height") - d[1]; })
+	//   .attr("width", 20)
+	//   .attr("height", function(d) { return d[1]; })
+	//   .attr("fill", "orange");
+  
+  });
+
