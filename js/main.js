@@ -80,20 +80,17 @@ Promise.all([d3.csv("data/bigfoot.csv"),
 	// Perform the frequency count on the desired column
 	var count = d3.rollup(files [1], v => v.length, d => d.season);
 	var count2 = d3.rollup(files [0], v => v.length, d => d.season);
-
-	var set1 = count.values();
-	var set2 = count2.values();
 	console.log(count.values())
 	var trace1 = {
-		x: ['Spring', 'Summer', 'Fall', 'Winter'],
-		y: Array.from(set1),
+		x: Array.from(count.keys()),
+		y: Array.from(count.values()),
 		//set1,
 		name: 'UFO',
 		type: 'bar'
 	  };
 	  var trace2 = {
-		x: ['Spring', 'Summer', 'Fall', 'Winter'],
-		y: Array.from(set2),
+		x: Array.from(count2.keys()),
+		y: Array.from(count2.values()),
 		//set2,
 		name: 'bf',
 		type: 'bar'
