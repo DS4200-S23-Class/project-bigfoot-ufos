@@ -41,18 +41,27 @@ Promise.all([d3.csv("data/bigfoot.csv"),
 	for (let key in files[0]) {
 		try {
 			L.circleMarker([files[0][key].latitude, files[0][key].longitude], {
-				radius: 3,
+				radius: 7,
 				className: "bf-coords"
-			}).addTo(mymap);
-		} catch (error) {}
+			}).addTo(mymap)
+			.bindPopup(`<strong>Bigfoot Sighting</strong><br>
+  						<strong>Date</strong>: ${files[0][key].date}<br>
+  						<strong>County</strong>: ${files[0][key].state}<br>
+  						<strong>County</strong>: ${files[0][key].county}`);
+			} catch (error) {}
 	}
 
 	for (let key in files[1]) {
 		try {
 			L.circleMarker([files[1][key].city_latitude, files[1][key].city_longitude], {
-				radius: 3,
+				radius: 7,
 				className: "ufo-coords"
-			}).addTo(mymap);
+			}).addTo(mymap)
+			.bindPopup(`<strong>UFO Sighting</strong><br>
+  						<strong>Date</strong>: ${files[1][key].date_time}<br>
+  						<strong>City</strong>: ${files[1][key].state}<br>
+  						<strong>State</strong>: ${files[1][key].city}<br>
+  						<strong>Duration</strong>: ${files[1][key].duration}`);
 		} catch (error) {}
 	}
 
