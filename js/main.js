@@ -111,6 +111,7 @@ Promise.all([d3.csv("data/bigfoot.csv"),
 	svg = d3.select("#legend").append("svg")
 					.attr("width", 180)
 					.attr("height", 150);
+
 		
 	svg.selectAll("legends").data(categories).enter()
 			.append("circle")
