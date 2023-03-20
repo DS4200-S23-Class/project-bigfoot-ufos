@@ -47,3 +47,14 @@ h1 {
 .rect{
     fill: black;
 }
+
+#scroll-box{
+    height:300px;
+    width:400px;
+    max-width: 25%;
+    margin: 50px;
+    padding: 20px;
+    border:1px solid #ccc;
+    font:24px Diastema Regular;
+    overflow:auto;
+}

@@ -39,24 +39,37 @@ Promise.all([d3.csv("data/bigfoot.csv"),
 	}).addTo(mymap);
 
 	for (let key in files[0]) {
+		function pointClicked() {
+		let text0 = "<strong>Summary of Sighting: </strong>"
+		let text1 = files[0][key].observed;
+		document.getElementById("scroll-box").innerHTML = text0 + "<br>" + text1;
+		}
 		try {
 			L.circleMarker([files[0][key].latitude, files[0][key].longitude], {
 				radius: 7,
 				className: "bf-coords"
 			}).addTo(mymap)
+			.on("click", pointClicked)
 			.bindPopup(`<strong>Bigfoot Sighting</strong><br>
   						<strong>Date</strong>: ${files[0][key].date}<br>
   						<strong>State</strong>: ${files[0][key].state}<br>
   						<strong>County</strong>: ${files[0][key].county}`);
 			} catch (error) {}
+
 	}
 
 	for (let key in files[1]) {
+		function pointClicked() {
+		let text0 = "<strong>Summary of Sighting: </strong>"
+		let text1 = files[1][key].text;
+		document.getElementById("scroll-box").innerHTML = text0 + "<br>" + text1;
+		}
 		try {
 			L.circleMarker([files[1][key].city_latitude, files[1][key].city_longitude], {
 				radius: 7,
 				className: "ufo-coords"
 			}).addTo(mymap)
+			.on("click", pointClicked)
 			.bindPopup(`<strong>UFO Sighting</strong><br>
   						<strong>Date</strong>: ${files[1][key].date_time}<br>
   						<strong>City</strong>: ${files[1][key].city}<br>
