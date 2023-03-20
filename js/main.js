@@ -1,3 +1,31 @@
+function filter(event) {
+	if (d3.select(this).classed("Bigfoot Sighting")) {
+
+		if (!(d3.select(this).classed("off"))) {
+			d3.selectAll(".bf-active").classed("bf-inactive", true).classed("bf-active", false);
+			d3.select(this).classed("off", true);
+		}
+
+		else {
+			d3.selectAll(".bf-inactive").classed("bf-active", true).classed("bf-inactive", false);
+			d3.select(this).classed("off", false);
+		}
+	}
+
+	else {
+		
+		if (!d3.select(this).classed("off")) {
+			d3.selectAll(".ufo-active").classed("ufo-inactive", true).classed("ufo-active", false);
+			d3.select(this).classed("off", true);
+		}
+
+		else {
+			d3.selectAll(".ufo-inactive").classed("ufo-active", true).classed("ufo-inactive", false);
+			d3.select(this).classed("off", false);
+		}
+	}
+};
+
 // ufo: x and y are going to be city_latitude & city_longitude
 // bigfoot: x and y are latitude & longitude
 
@@ -47,7 +75,7 @@ Promise.all([d3.csv("data/bigfoot.csv"),
 		try {
 			L.circleMarker([files[0][key].latitude, files[0][key].longitude], {
 				radius: 7,
-				className: "bf-coords"
+				className: "bf-active"
 			}).addTo(mymap)
 			.on("click", pointClicked)
 			.bindPopup(`<strong>Bigfoot Sighting</strong><br>
@@ -67,7 +95,7 @@ Promise.all([d3.csv("data/bigfoot.csv"),
 		try {
 			L.circleMarker([files[1][key].city_latitude, files[1][key].city_longitude], {
 				radius: 7,
-				className: "ufo-coords"
+				className: "ufo-active"
 			}).addTo(mymap)
 			.on("click", pointClicked)
 			.bindPopup(`<strong>UFO Sighting</strong><br>
@@ -77,8 +105,28 @@ Promise.all([d3.csv("data/bigfoot.csv"),
 		} catch (error) {}
 	}
 
+	let labels = ['categories'];
+	let categories = [{label: "Bigfoot Sighting", color: "orange"}, {label: "UFO Sighting", color: "steelblue"}];
 
-					
+	svg = d3.select("#legend").append("svg")
+					.attr("width", 180)
+					.attr("height", 150);
+		
+	svg.selectAll("legends").data(categories).enter()
+			.append("circle")
+				.attr("class", (d) => {return d.label})
+				.attr("r", 10)
+				.attr("cx", 30)
+				.attr("cy", (d, i) => {return (i + 1) * 50 - 5})
+				.style("fill", (d) => {return d.color})
+				.on("click", filter);
+
+	svg.selectAll("labels").data(categories).enter()
+			.append("text")
+				.attr("x", 50)
+				.attr("y", (d, i) => {return (i + 1) * 50})
+				.text((d) => {return d.label});
+	
 	
 
 });

@@ -16,6 +16,25 @@ h1 {
 	align-items: left;
 }
 
+.bf-inactive {
+    fill: grey !important;
+    stroke: none;
+    opacity: 0.3 !important;
+}
+
+.ufo-inactive {
+    fill: grey !important;
+    stroke: none;
+    opacity: 0.3 !important;
+}
+
+#legend {
+    height: 150px;
+    border: 2px solid black;
+    margin: 10px;
+    margin-top: 130px;
+}
+
 #map {
     max-width: 75%;
     width: 750px;
@@ -28,13 +47,13 @@ h1 {
     height: 450px;
 }
 
-.bf-coords {
-    fill: orange;
-    stroke: none;
-    fill-opacity: 0.5;
+.bf-active {
+    fill: orange !important;
+    stroke: none !important;
+    fill-opacity: 0.5 !important;
 }
 
-.ufo-coords {
+.ufo-active {
     fill: steelblue;
     stroke: none;
     fill-opacity: 0.5;
