@@ -2,7 +2,7 @@ body {
     font-family: Diastema Regular;
 }
 
-.centered {
+h1 {
     text-align: center;
 }
 
@@ -26,6 +26,19 @@ body {
     fill: grey !important;
     stroke: none;
     opacity: 0.3 !important;
+}
+
+
+.bar-bf-inactive {
+    fill: grey !important;
+    stroke: none;
+    opacity: 0.0 !important;
+}
+
+.bar-ufo-inactive {
+    fill: grey !important;
+    stroke: none;
+    opacity: 0.0 !important;
 }
 
 #legend {
@@ -59,6 +72,18 @@ body {
     fill-opacity: 0.5;
 }
 
+.bar-bf-active {
+    fill: orange !important;
+    stroke: none !important;
+    fill-opacity: 1 !important;
+}
+
+.bar-ufo-active {
+    fill: steelblue;
+    stroke: none;
+    fill-opacity: 1;
+}
+
 .rect{
     fill: black;
 }
@@ -72,4 +97,8 @@ body {
     border:1px solid #ccc;
     font:24px Diastema Regular;
     overflow:auto;
+}
+
+.tooltip{
+    position: absolute;
 }
