@@ -16,10 +16,6 @@ h1 {
 	align-items: left;
 }
 
-#legend {
-    width: 10%;
-}
-
 #map {
     max-width: 75%;
     width: 750px;

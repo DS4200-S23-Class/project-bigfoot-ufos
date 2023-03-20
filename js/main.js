@@ -64,6 +64,31 @@ Promise.all([d3.csv("data/bigfoot.csv"),
 		} catch (error) {}
 	}
 
+	let legend = L.control({position: "bottomleft"});
+
+
+	let labels = ['categories'];
+	let categories = [{label: "Bigfoot Sighting", color: "orange"}, {label: "UFO Sighting", color: "steelblue"}];
+
+	svg = d3.select("#legend").append("svg")
+					.attr("width", 150)
+					.attr("height", 150);
+		
+	svg.selectAll("legends").data(categories).enter()
+			.append("circle")
+				.attr("r", 5)
+				.attr("cx", 10)
+				.attr("cy", (d, i) => {return (i + 1) * 50})
+				.style("fill", (d) => {return d.color});
+
+	svg.selectAll("labels").data(categories).enter()
+			.append("text")
+				.attr("x", 20)
+				.attr("y", (d, i) => {return (i + 1) * 50})
+				.text((d) => {return d.label});
+					
+	
+
 });
 
 
