@@ -46,7 +46,7 @@ Promise.all([d3.csv("data/bigfoot.csv"),
 			}).addTo(mymap)
 			.bindPopup(`<strong>Bigfoot Sighting</strong><br>
   						<strong>Date</strong>: ${files[0][key].date}<br>
-  						<strong>County</strong>: ${files[0][key].state}<br>
+  						<strong>State</strong>: ${files[0][key].state}<br>
   						<strong>County</strong>: ${files[0][key].county}`);
 			} catch (error) {}
 	}
@@ -59,9 +59,8 @@ Promise.all([d3.csv("data/bigfoot.csv"),
 			}).addTo(mymap)
 			.bindPopup(`<strong>UFO Sighting</strong><br>
   						<strong>Date</strong>: ${files[1][key].date_time}<br>
-  						<strong>City</strong>: ${files[1][key].state}<br>
-  						<strong>State</strong>: ${files[1][key].city}<br>
-  						<strong>Duration</strong>: ${files[1][key].duration}`);
+  						<strong>City</strong>: ${files[1][key].city}<br>
+  						<strong>State</strong>: ${files[1][key].state}`);
 		} catch (error) {}
 	}
 
