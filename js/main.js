@@ -1,14 +1,26 @@
-function filter(event) {
-	if (d3.select(this).classed("Bigfoot Sighting")) {
+// js file
+// Bigfoot, UFOs, and Where to Find Them
+// started 3/15/23
 
+
+// filter function used for points on the map
+function filter(event) {
+	// checks if current selection has class of bigfoot sighting
+	if (d3.select(this).classed("Bigfoot Sighting")) {
+		// checks if the selection doesn't have the class of off
 		if (!(d3.select(this).classed("off"))) {
+			// selects all elements with class of bigfoot active
+			// changes the class to bf-inactive, and adds the off class
 			d3.selectAll(".bf-active").classed("bf-inactive", true).classed("bf-active", false);
 			d3.select(this).classed("off", true)
 			d3.selectAll(".bar-bf-active").classed("bar-bf-inactive", true).classed("bar-bf-active", false);
 			d3.select(this).classed("off", true);
 		}
 
+		// class of off
 		else {
+			// selects all inactive class, makes them have the active class
+			// takes away the off class
 			d3.selectAll(".bf-inactive").classed("bf-active", true).classed("bf-inactive", false);
 			d3.select(this).classed("off", false)
 			d3.selectAll(".bar-bf-inactive").classed("bar-bf-active", true).classed("bar-bf-inactive", false);
@@ -17,8 +29,10 @@ function filter(event) {
 	}
 
 	else {
-		
+		// repeat the same for UFOs
+		// no off class
 		if (!d3.select(this).classed("off")) {
+			// change from active to inactive & add off class
 			d3.selectAll(".ufo-active").classed("ufo-inactive", true).classed("ufo-active", false);
 			d3.select(this).classed("off", true)
 			d3.selectAll(".bar-ufo-active").classed("bar-ufo-inactive", true).classed("bar-ufo-active", false);
@@ -26,6 +40,7 @@ function filter(event) {
 		}
 
 		else {
+			// inactive to active, remove off class
 			d3.selectAll(".ufo-inactive").classed("ufo-active", true).classed("ufo-inactive", false);
 			d3.select(this).classed("off", false)
 			d3.selectAll(".bar-ufo-inactive").classed("bar-ufo-active", true).classed("bar-ufo-inactive", false);
@@ -56,36 +71,30 @@ Promise.all([d3.csv("data/bigfoot.csv"),
 
 	// map background 
 
-	// opt 1
-	// L.tileLayer(
-	//     'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-	//     attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a>',
-	//     maxZoom: 10,
-	//     }).addTo(mymap);
-
-	// opt 2
-	// L.tileLayer('https://tiles.stadiamaps.com/tiles/alidade_smooth/{z}/{x}/{y}{r}.png', {
-	// 	maxZoom: 20,
-	// 	attribution: '&copy; <a href="https://stadiamaps.com/">Stadia Maps</a>, &copy; <a href="https://openmaptiles.org/">OpenMapTiles</a> &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors'
-	// 	}).addTo(mymap);
-
-	// opt 3
+	// leaflet map
 	L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer/tile/{z}/{y}/{x}', {
 		attribution: 'Tiles &copy; Esri &mdash; Esri, DeLorme, NAVTEQ, TomTom, Intermap, iPC, USGS, FAO, NPS, NRCAN, GeoBase, Kadaster NL, Ordnance Survey, Esri Japan, METI, Esri China (Hong Kong), and the GIS User Community'
 	}).addTo(mymap);
 
+	// loop through the bigfoot file
 	for (let key in files[0]) {
+
+		// function to be called when a point on the map is clicked
 		function pointClicked() {
-		let text0 = "<strong>Summary of Sighting: </strong>"
-		let text1 = files[0][key].observed;
-		document.getElementById("scroll-box").innerHTML = text0 + "<br>" + text1;
+			let text0 = "<strong>Summary of Bigfoot Sighting: </strong>"
+			// text of bigfoot sighting
+			let text1 = files[0][key].observed;
+			// add the text to the scroll box
+			document.getElementById("scroll-box").innerHTML = text0 + "<br>" + text1;
 		}
 		try {
+			// create a point on the graph using the longitude and latitude
 			L.circleMarker([files[0][key].latitude, files[0][key].longitude], {
 				radius: 7,
 				className: "bf-active"
 			}).addTo(mymap)
 			.on("click", pointClicked)
+			// add a tooltip that prints out relevant information
 			.bindPopup(`<strong>Bigfoot Sighting</strong><br>
   						<strong>Date</strong>: ${files[0][key].date}<br>
   						<strong>State</strong>: ${files[0][key].state}<br>
@@ -94,18 +103,24 @@ Promise.all([d3.csv("data/bigfoot.csv"),
 
 	}
 
+	// loop through the UFO file
 	for (let key in files[1]) {
+
+		// function to be called when a UFO point is clicked
 		function pointClicked() {
-		let text0 = "<strong>Summary of Sighting: </strong>"
-		let text1 = files[1][key].text;
-		document.getElementById("scroll-box").innerHTML = text0 + "<br>" + text1;
+			let text0 = "<strong>Summary of UFO Sighting: </strong>"
+			let text1 = files[1][key].text;
+			// add to the scrollbox
+			document.getElementById("scroll-box").innerHTML = text0 + "<br>" + text1;
 		}
 		try {
+			// add point based on the latitude and longitude
 			L.circleMarker([files[1][key].city_latitude, files[1][key].city_longitude], {
 				radius: 7,
 				className: "ufo-active"
 			}).addTo(mymap)
 			.on("click", pointClicked)
+			// tooltip
 			.bindPopup(`<strong>UFO Sighting</strong><br>
   						<strong>Date</strong>: ${files[1][key].date_time}<br>
   						<strong>City</strong>: ${files[1][key].city}<br>
@@ -114,12 +129,18 @@ Promise.all([d3.csv("data/bigfoot.csv"),
 	}
 
 	let labels = ['categories'];
+
+	// for legend
+	// labels & colors
 	let categories = [{label: "Bigfoot Sighting", color: "orange"}, {label: "UFO Sighting", color: "steelblue"}];
 
+
+	// create an svg element for the legend
 	svg = d3.select("#legend").append("svg")
 					.attr("width", 180)
 					.attr("height", 150);
-		
+	
+	// use the categories array to make circles & add to svg
 	svg.selectAll("legends").data(categories).enter()
 			.append("circle")
 				.attr("class", (d) => {return d.label})
@@ -129,6 +150,7 @@ Promise.all([d3.csv("data/bigfoot.csv"),
 				.style("fill", (d) => {return d.color})
 				.on("click", filter);
 
+	// use categories array to add text labels to the legend
 	svg.selectAll("labels").data(categories).enter()
 			.append("text")
 				.attr("x", 50)
