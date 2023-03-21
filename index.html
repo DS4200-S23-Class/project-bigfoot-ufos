@@ -9,20 +9,23 @@
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.3.4/dist/leaflet.css" integrity="sha512-puBpdR0798OZvTTbP4A8Ix/l+A4dHDD0DGqYW6RQ+9jxkRFclaxxQb/SJAWZfWAkuyeQUytO7+7N4QKrDh+drA==" crossorigin=""/>
     <script src="https://unpkg.com/leaflet@1.3.4/dist/leaflet.js" integrity="sha512-nMMmRyTVoLYqjP9hrbed9S+FzjZHW5gY1TWCHA5ckwXZBadntCNs8kEqAWdrb9O7rxbCaA4lKTIWjDXZxflOcA==" crossorigin=""></script>
 
+    <!-- link stylesheet-->
     <link rel="stylesheet" type="text/css" href="style.css">
 
+    <!-- title -->
     <title>Bigfoot & UFOs</title>
 
-    <script src='https://cdn.plot.ly/plotly-2.18.2.min.js'></script>
 </head>
 
 
 <body>
 
-    <h1>Bigfoot, UFOs, and Where to Find Them</h1>
+    <!-- header -->
+
+    <h1 class="centered">Bigfoot, UFOs, and Where to Find Them</h1>
 
     <div>
-        <h2>Motivation</h2>
+        <h2 class="centered">Motivation</h2>
         <p>
             Voluntary reports of UFO and Bigfoot sightings can be submitted and found online for many to be seen. Examining these reports may lead to new insights. We want to answer why certain people truly believe they have seen something that could be fake? Our homepage includes three visualizations to answer these. Where do these ideas and belief systems come from, do certain areas see large amounts of reported sightings? UFOs can be spotted anywhere in the sky, but do Bigfoot sightings only happen in certain areas? These visualizations are used to examine the psyche of the people submitting their findings. To determine this, we look at where the sighting took place, time of day, time of year, and the report given along with their sighting. 
 
@@ -32,9 +35,7 @@
     </div>
 
     <div>
-        <h2>Background</h2>
-        TODO: Add link to report, demo video, link to data etc. here
-
+        <h2 class="centered">Background</h2>
         <p>
             <h3> Bigfoot data</h3>
             The Bigfoot data came from the Bigfoot Field Researchers Organization (BFRO), and was accessed via <a href=https://data.world/timothyrenner/bfro-sightings-data>data.world.com</a> . Specifically, we accessed the bfro_locations.csv and bfro_reports_geocoded.csv files. Together, these files contain around 5,000 unique reports on bigfoot sightings as well as times of the events, point location data, and weather data scraped using the Dark Sky API. The original locations data and geocoded data contained 4,250 rows and 6 columns and 5,021 rows and 29 columns, respectively.We then cleaned the data to ignore reports missing data on latitude/longitude or date and dropped columns unnecessary to our analysis such as title and geohash. We then further abstracted the data by filtering for reports made after 2010. Our final data contained 964 rows and 16 columns with each row representing a unique report and the attributes surrounding that event.
@@ -48,29 +49,36 @@
     </div>
 
     <div>
-        <h2>Visualization</h2>
+        <!-- visualizations -->
+        <h2 class="centered">Visualization</h2>
         <div class="visualization">
             <!-- map vis -->
             <div id="legend"></div>
             <div id="map"></div>
+            <div id="scroll-box">Click on a point to show more info!</div>
             <div id="vis1"></div>
             <div id="vis2"></div>
-
-            <div id="scroll-box">Click on a point to show more info!</div>
         </div>
         <div id="vis1"></div>
     </div>
 
     <div>
-        <h2>Acknowledgements</h2>
-        <ul>
-            <li>
-                <a href =""></a>
-            </li>
-        </ul>  
+        <h2 class="centered">Acknowledgements</h3>
+        <div>
+            <ul>
+                <li><a href="https://stackoverflow.com/questions/21842384/importing-data-from-multiple-csv-files-in-d3">Importing Data from Multiple CSVs</a></li>
+                <li><a href="https://observablehq.com/@d3/u-s-map">D3 US Map</a></li>
+                <li><a href="https://leafletjs.com/reference.html ">Leaflet Reference</a></li>
+                <li><a href="https://developers.arcgis.com/esri-leaflet/layers/display-a-popup/ ">Leaflet Tooltip</a></li>
+                <li><a href="https://htmlcolorcodes.com/ ">ColorMaps</a></li>
+                <li><a href=”https://www.quackit.com/html/codes/html_scroll_box.cfm”> Scrollbox Reference</a></li>
+            </ul>
+        </div>
+
     </div>
 
 
+    <!-- link js file -->
     <script src="js/main.js"></script>
 </body>
 
