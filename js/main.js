@@ -61,8 +61,10 @@ Promise.all([d3.csv("data/bigfoot.csv"),
 	// files [1]: ufos
 
 	// 10 lines of data printed to console
-	console.log("bigfoot data" + files[0].slice(0, 10)); 
-	console.log("ufos data" + files[1].slice(0, 10));
+	console.log("bigfoot data:");
+	console.log(files[0].slice(0, 10)); 
+	console.log("UFO data:");
+	console.log(files[1].slice(0, 10));
 
 	// initialize the map; center around usa
 	let mymap = L
@@ -140,6 +142,9 @@ Promise.all([d3.csv("data/bigfoot.csv"),
 					.attr("width", 180)
 					.attr("height", 150);
 	
+	svg.selectAll("legends").data(categories).enter()
+				.append("text");
+
 	// use the categories array to make circles & add to svg
 	svg.selectAll("legends").data(categories).enter()
 			.append("circle")
