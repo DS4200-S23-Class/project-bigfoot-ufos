@@ -142,8 +142,12 @@ Promise.all([d3.csv("data/bigfoot.csv"),
 					.attr("width", 180)
 					.attr("height", 150);
 	
-	svg.selectAll("legends").data(categories).enter()
-				.append("text");
+	svg.append("text")
+				.attr("x", 20)
+				.attr("y", 35)
+				.text("Click to Filter")
+				.style("font-weight", "bold")
+				.style("text-decoration", "underline");
 
 	// use the categories array to make circles & add to svg
 	svg.selectAll("legends").data(categories).enter()
@@ -151,7 +155,7 @@ Promise.all([d3.csv("data/bigfoot.csv"),
 				.attr("class", (d) => {return d.label})
 				.attr("r", 10)
 				.attr("cx", 30)
-				.attr("cy", (d, i) => {return (i + 1) * 50 - 5})
+				.attr("cy", (d, i) => {return (i + 1) / 2 * 60 + 40})
 				.style("fill", (d) => {return d.color})
 				.on("click", filter);
 
@@ -159,7 +163,7 @@ Promise.all([d3.csv("data/bigfoot.csv"),
 	svg.selectAll("labels").data(categories).enter()
 			.append("text")
 				.attr("x", 50)
-				.attr("y", (d, i) => {return (i + 1) * 50})
+				.attr("y", (d, i) => {return (i + 1) / 2 * 60 + 45})
 				.text((d) => {return d.label});
 	
 	
