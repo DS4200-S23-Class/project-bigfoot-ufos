@@ -269,9 +269,11 @@ d3.csv("data/bar.csv").then( function(data) {
 
     // Define event handler functions for tooltips
     function handleMouseover(event, d) {
-      // on mouseover, make opaque 
-      TOOLTIP.style("opacity", 1); 
-	  TOOLTIP.html("Kind: " + i_d(d.key) + "<br>Value: " + d.groups)
+      if (!d3.select(this).classed("off")) {
+    		// on mouseover, make opaque 
+    		TOOLTIP.style("opacity", 1); 
+    		TOOLTIP.html("Kind: " + i_d(d.key) + "<br>Value: " + d.value)
+  		}
     }
     function handleMousemove(event, d) {
       // position the tooltip and fill in information 
