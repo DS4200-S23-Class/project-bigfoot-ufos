@@ -60,10 +60,10 @@ makes the points grey */
 }
 
 #vis1 {
-    max-width: 25%;
+    max-width: 100%;
     width: 750px;
     height: 450px;
-    align-items: center;
+    margin-top: 100px;
 }
 
 /* active, class for filtering points
@@ -108,6 +108,14 @@ high opacity, colored */
     overflow:auto;
 }
 
-.tooltip{
-    position: absolute;
+.tooltip {
+  position: absolute;
+  background-color: white;
+  padding: 5px;
+  border: 1px solid black;
+  opacity: 50%;
+}
+
+.tooltip.off {
+  display: none;
 }
