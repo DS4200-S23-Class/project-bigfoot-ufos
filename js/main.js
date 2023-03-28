@@ -269,7 +269,7 @@ d3.csv("data/bar.csv").then( function(data) {
 
     // Define event handler functions for tooltips
     function handleMouseover(event, d) {
-      if (!d3.select(this).classed("off")) {
+      if (d3.select(this).classed("bar-bf-active") || d3.select(this).classed("bar-ufo-active") ) {
     		// on mouseover, make opaque 
     		TOOLTIP.style("opacity", 1); 
     		TOOLTIP.html("Kind: " + i_d(d.key) + "<br>Value: " + d.value)
@@ -281,10 +281,12 @@ d3.csv("data/bar.csv").then( function(data) {
                                                           // from mouse
               .style("top", (event.pageY +5) + "px"); 
     }
+
     function handleMouseleave(event, d) {
       // on mouseleave, make transparant again 
       TOOLTIP.style("opacity", 0); 
     } 
+
     // Add event listeners
     svg2.selectAll("#bar")
           .on("mouseover", handleMouseover) //add event listeners
