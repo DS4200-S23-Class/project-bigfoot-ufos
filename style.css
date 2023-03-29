@@ -17,18 +17,55 @@ body {
 	flex-wrap: wrap;
 }
 
+.bf-legend {
+    cursor: pointer;
+}
+
+.ufo-legend {
+    cursor: pointer;
+}
+
+/* active, class for filtering points
+high opacity, colored */
+.bf-active {
+    fill: orange !important;
+    stroke: none !important;
+    fill-opacity: 0.5 !important;
+}
+
+.ufo-active {
+    fill: steelblue;
+    stroke: none;
+    fill-opacity: 0.5;
+    cursor: pointer;
+}
+
+.bar-bf-active {
+    fill: orange !important;
+    stroke: none !important;
+    fill-opacity: 1 !important;
+}
+
+.bar-ufo-active {
+    fill: steelblue;
+    stroke: none;
+    fill-opacity: 1;
+}
+
 /* inactive class for filtering data
 makes the points grey */
 .bf-inactive {
     fill: grey !important;
     stroke: none;
     opacity: 0.3 !important;
+    cursor: pointer;
 }
 
 .ufo-inactive {
     fill: grey !important;
     stroke: none;
     opacity: 0.3 !important;
+    cursor: pointer;
 }
 
 
@@ -64,32 +101,6 @@ makes the points grey */
     width: 750px;
     height: 450px;
     margin-top: 100px;
-}
-
-/* active, class for filtering points
-high opacity, colored */
-.bf-active {
-    fill: orange !important;
-    stroke: none !important;
-    fill-opacity: 0.5 !important;
-}
-
-.ufo-active {
-    fill: steelblue;
-    stroke: none;
-    fill-opacity: 0.5;
-}
-
-.bar-bf-active {
-    fill: orange !important;
-    stroke: none !important;
-    fill-opacity: 1 !important;
-}
-
-.bar-ufo-active {
-    fill: steelblue;
-    stroke: none;
-    fill-opacity: 1;
 }
 
 .rect{

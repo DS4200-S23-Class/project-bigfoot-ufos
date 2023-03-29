@@ -6,15 +6,16 @@
 // filter function used for points on the map
 function filter(event) {
 	// checks if current selection has class of bigfoot sighting
-	if (d3.select(this).classed("Bigfoot Sighting")) {
+	if (d3.select(this).classed("bf-legend")) {
 		// checks if the selection doesn't have the class of off
 		if (!(d3.select(this).classed("off"))) {
 			// selects all elements with class of bigfoot active
 			// changes the class to bf-inactive, and adds the off class
 			d3.selectAll(".bf-active").classed("bf-inactive", true).classed("bf-active", false);
-			d3.select(this).classed("off", true)
+			d3.select(this).classed("off", true);
 			d3.selectAll(".bar-bf-active").classed("bar-bf-inactive", true).classed("bar-bf-active", false);
 			d3.select(this).classed("off", true);
+			d3.select(this).style("stroke", "white").style("fill", "white");
 		}
 
 		// class of off
@@ -25,6 +26,7 @@ function filter(event) {
 			d3.select(this).classed("off", false)
 			d3.selectAll(".bar-bf-inactive").classed("bar-bf-active", true).classed("bar-bf-inactive", false);
 			d3.select(this).classed("off", false);
+			d3.select(this).style("stroke", "orange").style("fill", "orange");
 		}
 	}
 
@@ -37,6 +39,7 @@ function filter(event) {
 			d3.select(this).classed("off", true)
 			d3.selectAll(".bar-ufo-active").classed("bar-ufo-inactive", true).classed("bar-ufo-active", false);
 			d3.select(this).classed("off", true);
+			d3.select(this).style("stroke", "white").style("fill", "white");
 		}
 
 		else {
@@ -45,6 +48,7 @@ function filter(event) {
 			d3.select(this).classed("off", false)
 			d3.selectAll(".bar-ufo-inactive").classed("bar-ufo-active", true).classed("bar-ufo-inactive", false);
 			d3.select(this).classed("off", false);
+			d3.select(this).style("stroke", "steelblue").style("fill", "steelblue");
 		}
 	}
 };
@@ -152,8 +156,20 @@ Promise.all([d3.csv("data/bigfoot.csv"),
 	// use the categories array to make circles & add to svg
 	svg.selectAll("legends").data(categories).enter()
 			.append("circle")
-				.attr("class", (d) => {return d.label})
+				.attr("class", (d) => {if (d.label == "Bigfoot Sighting") {return "bf-legend"}
+																else {return "ufo-legend"}})
 				.attr("r", 10)
+				.attr("cx", 30)
+				.attr("cy", (d, i) => {return (i + 1) / 2 * 60 + 40})
+				.style("fill", "white")
+				.style("stroke", (d) => {return d.color})
+				.style("stroke-width", 2);
+
+	svg.selectAll("legends").data(categories).enter()
+			.append("circle")
+				.attr("class", (d) => {if (d.label == "Bigfoot Sighting") {return "bf-legend"}
+																else {return "ufo-legend"}})
+				.attr("r", 7)
 				.attr("cx", 30)
 				.attr("cy", (d, i) => {return (i + 1) / 2 * 60 + 40})
 				.style("fill", (d) => {return d.color})
