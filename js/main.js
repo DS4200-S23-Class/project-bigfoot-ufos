@@ -145,7 +145,7 @@ Promise.all([d3.csv("data/bigfoot.csv"),
 	svg.append("text")
 				.attr("x", 20)
 				.attr("y", 35)
-				.text("Click to Filter")
+				.text("Click to Filter:")
 				.style("font-weight", "bold")
 				.style("text-decoration", "underline");
 
