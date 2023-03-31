@@ -189,7 +189,7 @@ Promise.all([d3.csv("data/bigfoot.csv"),
 
 
 // set the dimensions and margins of the graph
-const margin = {top: 10, right: 30, bottom: 20, left: 50},
+const margin = {top: 10, right: 30, bottom: 50, left: 50},
     width = 740 - margin.left - margin.right,
     height = 400 - margin.top - margin.bottom;
 
@@ -200,6 +200,10 @@ const svg2 = d3.select("#vis1")
     .attr("height", height + margin.top + margin.bottom)
   .append("g")
     .attr("transform",`translate(${margin.left},${margin.top})`);
+
+// define x and y axis labels
+const xAxisLabel = "Month";
+const yAxisLabel = "Number of Sightings";
 
 // Parse the Data
 d3.csv("data/bar.csv").then( function(data) {
@@ -221,6 +225,14 @@ d3.csv("data/bar.csv").then( function(data) {
     .attr("transform", `translate(0, ${height})`)
     .call(d3.axisBottom(x).tickSize(0));
 
+
+  // Add X-axis label
+  svg2.append("text")
+    .attr("transform", `translate(${width / 2}, ${height + 30})`)
+    .style("text-anchor", "middle")
+    .text(xAxisLabel);
+
+
   // Add Y axis
   const y = d3.scaleLinear()
     .domain([0, 120])
@@ -228,27 +240,36 @@ d3.csv("data/bar.csv").then( function(data) {
   svg2.append("g")
     .call(d3.axisLeft(y));
 
+  // Add Y-axis label
+  svg2.append("text")
+    .attr("transform", "rotate(-90)")
+    .attr("y", 0 - margin.left)
+    .attr("x", 0 - (height / 2))
+    .attr("dy", "1em")
+    .style("text-anchor", "middle")
+    .text(yAxisLabel);
+
   // Another scale for subgroup position?
   const xSubgroup = d3.scaleBand()
     .domain(subgroups)
     .range([0, x.bandwidth()])
-    .padding([0.05])
+    .padding([0.05]);
 
   // color palette = one color per subgroup
   const color = d3.scaleOrdinal()
     .domain(subgroups)
-    .range(['orange','steelblue'])
+    .range(['orange','steelblue']);
 
 
   // color palette = one color per subgroup
   const clas = d3.scaleOrdinal()
     .domain(subgroups)
-    .range(['bar-bf-active','bar-ufo-active'])
+    .range(['bar-bf-active','bar-ufo-active']);
 
 	  // color palette = one color per subgroup
  const i_d = d3.scaleOrdinal()
 	  .domain(subgroups)
-	  .range(['Bigfoot','UFO'])
+	  .range(['Bigfoot','UFO']);
 	  
   // Show the bars
   svg2.append("g")
@@ -288,7 +309,7 @@ d3.csv("data/bar.csv").then( function(data) {
       if (d3.select(this).classed("bar-bf-active") || d3.select(this).classed("bar-ufo-active") ) {
     		// on mouseover, make opaque 
     		TOOLTIP.style("opacity", 1); 
-    		TOOLTIP.html("Kind: " + i_d(d.key) + "<br>Value: " + d.value)
+    		TOOLTIP.html("Kind: " + i_d(d.key) + "<br>Value: " + d.value);
   		}
     }
     function handleMousemove(event, d) {
