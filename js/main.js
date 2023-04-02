@@ -100,6 +100,7 @@ Promise.all([d3.csv("data/bigfoot.csv"),
 				className: "bf-active"
 			}).addTo(mymap)
 			.on("click", pointClicked)
+
 			// add a tooltip that prints out relevant information
 			.bindPopup(`<strong>Bigfoot Sighting</strong><br>
   						<strong>Date</strong>: ${files[0][key].date}<br>
@@ -324,6 +325,7 @@ d3.csv("data/bar.csv").then( function(data) {
       TOOLTIP.style("opacity", 0); 
     } 
 
+
     // Add event listeners
     svg2.selectAll("#bar")
           .on("mouseover", handleMouseover) //add event listeners
@@ -331,5 +333,6 @@ d3.csv("data/bar.csv").then( function(data) {
           .on("mouseleave", handleMouseleave);    
 
 });
+
 
 

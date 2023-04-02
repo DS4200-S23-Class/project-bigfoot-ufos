@@ -96,11 +96,9 @@ makes the points grey */
     height: 450px;
 }
 
+/*center vis1 */
 #vis1 {
-    max-width: 100%;
-    width: 750px;
-    height: 450px;
-    margin-top: 100px;
+    margin: 0 auto;
 }
 
 .rect{
