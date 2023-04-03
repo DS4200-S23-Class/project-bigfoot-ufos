@@ -206,8 +206,11 @@ Promise.all([d3.csv("data/bigfoot.csv"),
 				.attr("y", (d, i) => {return (i + 1) / 2 * 60 + 45})
 				.text((d) => {return d.label});
 
+	getFeaturesInView(mymap);
+
 	mymap.on('zoomend', function() {
     getFeaturesInView(mymap);
+    plotBar();
 	});
 	
 
@@ -232,133 +235,220 @@ const svg2 = d3.select("#vis1")
 const xAxisLabel = "Month";
 const yAxisLabel = "Number of Sightings";
 
-// Parse the Data
-d3.csv("data/bar.csv").then( function(data) {
-    let categories = [{label: "Bigfoot Sighting", color: "orange"}, {label: "UFO Sighting", color: "steelblue"}];
-  // List of subgroups = header of the csv files = soil condition here
-  const subgroups = data.columns.slice(1)
-  console.log(subgroups)
-  // List of groups = species here = value of the first column called group -> I show them on the X axis
-  const groups = data.map(d => d.month)
+function plotBar() {
+	Promise.all([d3.csv("data/bigfoot.csv"),
+			 d3.csv("data/ufos.csv"), 
+			 ]).then((files) => {
 
-  console.log(groups)
+	// gather month counts for bf and ufo
+	let monthsData = [{month: 'January', data: {bf: {count: 0, label: 'bigfoot'}, ufo: {count: 0, label: 'ufo'}}}, {month: 'February', data: {bf: {count: 0, label: 'bigfoot'}, ufo: {count: 0, label: 'ufo'}}}, 
+										{month: 'March', data: {bf: {count: 0, label: 'bigfoot'}, ufo: {count: 0, label: 'ufo'}}}, {month: 'April', data: {bf: {count: 0, label: 'bigfoot'}, ufo: {count: 0, label: 'ufo'}}}, 
+										{month: 'May', data: {bf: {count: 0, label: 'bigfoot'}, ufo: {count: 0, label: 'ufo'}}}, {month: 'June', data: {bf: {count: 0, label: 'bigfoot'}, ufo: {count: 0, label: 'ufo'}}}, 
+										{month: 'July', data: {bf: {count: 0, label: 'bigfoot'}, ufo: {count: 0, label: 'ufo'}}}, {month: 'August', data: {bf: {count: 0, label: 'bigfoot'}, ufo: {count: 0, label: 'ufo'}}}, 
+										{month: 'September', data: {bf: {count: 0, label: 'bigfoot'}, ufo: {count: 0, label: 'ufo'}}}, {month: 'October', data: {bf: {count: 0, label: 'bigfoot'}, ufo: {count: 0, label: 'ufo'}}},
+										{month: 'November', data: {bf: {count: 0, label: 'bigfoot'}, ufo: {count: 0, label: 'ufo'}}}, {month: 'December', data: {bf: {count: 0, label: 'bigfoot'}, ufo: {count: 0, label: 'ufo'}}}];
 
-  // Add X axis
-  const x = d3.scaleBand()
-      .domain(groups)
+	// determine which data are currently zoomed on
+	for (key in files[0]) {
+		if (currentMarkers.includes('bf' + files[0][key].number)) {
+			monthsData[files[0][key].month - 1].data.bf.count ++;
+		}
+	}
+
+	for (key in files[1]) {
+		if (currentMarkers.includes('ufo' + files[1][key].number)) {
+			monthsData[files[1][key].month - 1].data.ufo.count ++;
+		}
+	}
+
+	// plot formatting
+	const MONTHS = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
+
+	const X = d3.scaleBand()
+      .domain(MONTHS)
       .range([0, width])
-      .padding([0.2])
+      .padding([0.2]);
+
   svg2.append("g")
     .attr("transform", `translate(0, ${height})`)
-    .call(d3.axisBottom(x).tickSize(0));
-
+    .call(d3.axisBottom(X).tickSize(0));
 
   // Add X-axis label
   svg2.append("text")
     .attr("transform", `translate(${width / 2}, ${height + 30})`)
     .style("text-anchor", "middle")
-    .text(xAxisLabel);
-
+    .text("Month");
 
   // Add Y axis
-  const y = d3.scaleLinear()
+  const Y = d3.scaleLinear()
     .domain([0, 120])
     .range([ height, 0 ]);
-  svg2.append("g")
-    .call(d3.axisLeft(y));
 
-  // Add Y-axis label
-  svg2.append("text")
-    .attr("transform", "rotate(-90)")
-    .attr("y", 0 - margin.left)
-    .attr("x", 0 - (height / 2))
-    .attr("dy", "1em")
-    .style("text-anchor", "middle")
-    .text(yAxisLabel);
+  svg2.append("g")
+    .call(d3.axisLeft(Y));
 
   // Another scale for subgroup position?
   const xSubgroup = d3.scaleBand()
-    .domain(subgroups)
-    .range([0, x.bandwidth()])
+    .domain(MONTHS)
+    .range([0, X.bandwidth()])
     .padding([0.05]);
 
-  // color palette = one color per subgroup
-  const color = d3.scaleOrdinal()
-    .domain(subgroups)
-    .range(['orange','steelblue']);
+	svg2.selectAll("bars")
+		.data(monthsData)
+		.enter()
+		.append("rect")
+			.attr("class", "bar-bf-active")
+			.attr("x", (d) => {return X(d.month) + xSubgroup.bandwidth() + 0.5})
+			.attr("y", (d) => {return Y(d.data.bf.count)})
+			.attr("width", xSubgroup.bandwidth())
+			.attr("height", (d) => {return height - Y(d.data.bf.count)})
+			.attr("fill", "orange");
 
-
-  // color palette = one color per subgroup
-  const clas = d3.scaleOrdinal()
-    .domain(subgroups)
-    .range(['bar-bf-active','bar-ufo-active']);
-
-	  // color palette = one color per subgroup
- const i_d = d3.scaleOrdinal()
-	  .domain(subgroups)
-	  .range(['Bigfoot','UFO']);
-	  
-  // Show the bars
-  svg2.append("g")
-    .selectAll("g")
-    // Enter in data = loop group per group
-    .data(data)
-    .join("g")
-      .attr("transform", d => `translate(${x(d.month)}, 0)`)
-    .selectAll("rect")
-    .data(function(d) { return subgroups.map(function(key) { return {key: key, value: d[key]}; }); })
-    .join("rect")
-      .attr("x", d => xSubgroup(d.key))
-      .attr("y", d => y(d.value))
-      .attr("width", xSubgroup.bandwidth())
-      .attr("height", d => height - y(d.value))
-      .attr("fill", d => color(d.key))
-	  .attr("class", d => clas(d.key))
-	  .attr("id", "bar");	
-	  
-	  
-
-
-
-
-	  // Tooltip
-
-     // To add a tooltip, we will need a blank div that we 
-    //  fill in with the appropriate text. Be use to note the
-    //  styling we set here and in the .css
-    const TOOLTIP = d3.select("#vis1")
-                        .append("div")
-                          .attr("class", "tooltip")
-                          .style("opacity", 0); 
-
-    // Define event handler functions for tooltips
-    function handleMouseover(event, d) {
-      if (d3.select(this).classed("bar-bf-active") || d3.select(this).classed("bar-ufo-active") ) {
-    		// on mouseover, make opaque 
-    		TOOLTIP.style("opacity", 1); 
-    		TOOLTIP.html("Kind: " + i_d(d.key) + "<br>Value: " + d.value);
-  		}
-    }
-    function handleMousemove(event, d) {
-      // position the tooltip and fill in information 
-      TOOLTIP.style("left", (event.pageX ) + "px") //add offset
-                                                          // from mouse
-              .style("top", (event.pageY +5) + "px"); 
-    }
-
-    function handleMouseleave(event, d) {
-      // on mouseleave, make transparant again 
-      TOOLTIP.style("opacity", 0); 
-    } 
-
-
-    // Add event listeners
-    svg2.selectAll("#bar")
-          .on("mouseover", handleMouseover) //add event listeners
-          .on("mousemove", handleMousemove)
-          .on("mouseleave", handleMouseleave);    
+	svg2.selectAll("bars")
+		.data(monthsData)
+		.enter()
+		.append("rect")
+			.attr("class", "bar-ufo-active")
+			.attr("x", (d) => {return X(d.month)})
+			.attr("y", (d) => {return Y(d.data.ufo.count)})
+			.attr("width", xSubgroup.bandwidth())
+			.attr("height", (d) => {return height - Y(d.data.ufo.count)})
+			.attr("fill", "steelblue");
 
 });
+
+};
+
+plotBar();
+
+// Parse the Data
+// d3.csv("data/bar.csv").then( function(data) {
+//   let categories = [{label: "Bigfoot Sighting", color: "orange"}, {label: "UFO Sighting", color: "steelblue"}];
+//   // List of subgroups = header of the csv files = soil condition here
+//   const subgroups = data.columns.slice(1)
+//   console.log(subgroups)
+//   // List of groups = species here = value of the first column called group -> I show them on the X axis
+//   const groups = data.map(d => d.month)
+
+//   console.log(groups)
+
+//   // Add X axis
+//   const x = d3.scaleBand()
+//       .domain(groups)
+//       .range([0, width])
+//       .padding([0.2]); 
+
+//   svg2.append("g")
+//     .attr("transform", `translate(0, ${height})`)
+//     .call(d3.axisBottom(x).tickSize(0));
+
+
+//   // Add X-axis label
+//   svg2.append("text")
+//     .attr("transform", `translate(${width / 2}, ${height + 30})`)
+//     .style("text-anchor", "middle")
+//     .text(xAxisLabel);
+
+
+//   // Add Y axis
+//   const y = d3.scaleLinear()
+//     .domain([0, 120])
+//     .range([ height, 0 ]);
+//   svg2.append("g")
+//     .call(d3.axisLeft(y));
+
+//   // Add Y-axis label
+//   svg2.append("text")
+//     .attr("transform", "rotate(-90)")
+//     .attr("y", 0 - margin.left)
+//     .attr("x", 0 - (height / 2))
+//     .attr("dy", "1em")
+//     .style("text-anchor", "middle")
+//     .text(yAxisLabel);
+
+//   // Another scale for subgroup position?
+//   const xSubgroup = d3.scaleBand()
+//     .domain(subgroups)
+//     .range([0, x.bandwidth()])
+//     .padding([0.05]);
+
+//   // color palette = one color per subgroup
+//   const color = d3.scaleOrdinal()
+//     .domain(subgroups)
+//     .range(['orange','steelblue']);
+
+
+//   // color palette = one color per subgroup
+//   const clas = d3.scaleOrdinal()
+//     .domain(subgroups)
+//     .range(['bar-bf-active','bar-ufo-active']);
+
+// 	  // color palette = one color per subgroup
+//  const i_d = d3.scaleOrdinal()
+// 	  .domain(subgroups)
+// 	  .range(['Bigfoot','UFO']);
+	  
+//   // Show the bars
+//   svg2.append("g")
+//     .selectAll("g")
+//     // Enter in data = loop group per group
+//     .data(data)
+//     .join("g")
+//       .attr("transform", d => `translate(${x(d.month)}, 0)`)
+//     .selectAll("rect")
+//     .data(function(d) { return subgroups.map(function(key) { return {key: key, value: d[key]}; }); })
+//     .join("rect")
+//       .attr("x", d => xSubgroup(d.key))
+//       .attr("y", d => y(d.value))
+//       .attr("width", xSubgroup.bandwidth())
+//       .attr("height", d => height - y(d.value))
+//       .attr("fill", d => color(d.key))
+// 	  .attr("class", d => clas(d.key))
+// 	  .attr("id", "bar");	
+	  
+	  
+
+
+
+
+// 	  // Tooltip
+
+//      // To add a tooltip, we will need a blank div that we 
+//     //  fill in with the appropriate text. Be use to note the
+//     //  styling we set here and in the .css
+//     const TOOLTIP = d3.select("#vis1")
+//                         .append("div")
+//                           .attr("class", "tooltip")
+//                           .style("opacity", 0); 
+
+//     // Define event handler functions for tooltips
+//     function handleMouseover(event, d) {
+//       if (d3.select(this).classed("bar-bf-active") || d3.select(this).classed("bar-ufo-active") ) {
+//     		// on mouseover, make opaque 
+//     		TOOLTIP.style("opacity", 1); 
+//     		TOOLTIP.html("Kind: " + i_d(d.key) + "<br>Value: " + d.value);
+//   		}
+//     }
+//     function handleMousemove(event, d) {
+//       // position the tooltip and fill in information 
+//       TOOLTIP.style("left", (event.pageX ) + "px") //add offset
+//                                                           // from mouse
+//               .style("top", (event.pageY +5) + "px"); 
+//     }
+
+//     function handleMouseleave(event, d) {
+//       // on mouseleave, make transparant again 
+//       TOOLTIP.style("opacity", 0); 
+//     } 
+
+
+//     // Add event listeners
+//     svg2.selectAll("#bar")
+//           .on("mouseover", handleMouseover) //add event listeners
+//           .on("mousemove", handleMousemove)
+//           .on("mouseleave", handleMouseleave);    
+
+// });
 
 
 
