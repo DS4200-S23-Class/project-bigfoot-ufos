@@ -2,6 +2,27 @@
 // Bigfoot, UFOs, and Where to Find Them
 // started 3/15/23
 
+// extend circle marker class to include id
+L.CircleMarker.include({
+	id: null,
+});
+
+let currentMarkers = [];
+
+// get markers currently in map view
+function getFeaturesInView(map) {
+  let features = [];
+  map.eachLayer( function(layer) {
+    try {
+      if(map.getBounds().contains(layer.getLatLng())) {
+        features.push(layer.options.id);
+      }
+    } catch (error) {};
+  });
+
+  currentMarkers = features;
+}
+
 
 // filter function used for points on the map
 function filter(event) {
@@ -97,7 +118,8 @@ Promise.all([d3.csv("data/bigfoot.csv"),
 			// create a point on the graph using the longitude and latitude
 			L.circleMarker([files[0][key].latitude, files[0][key].longitude], {
 				radius: 7,
-				className: "bf-active"
+				className: "bf-active",
+				id: "bf" + files[0][key].number
 			}).addTo(mymap)
 			.on("click", pointClicked)
 
@@ -124,7 +146,8 @@ Promise.all([d3.csv("data/bigfoot.csv"),
 			// add point based on the latitude and longitude
 			L.circleMarker([files[1][key].city_latitude, files[1][key].city_longitude], {
 				radius: 7,
-				className: "ufo-active"
+				className: "ufo-active",
+				id: "ufo" + files[1][key].number
 			}).addTo(mymap)
 			.on("click", pointClicked)
 			// tooltip
@@ -182,7 +205,10 @@ Promise.all([d3.csv("data/bigfoot.csv"),
 				.attr("x", 50)
 				.attr("y", (d, i) => {return (i + 1) / 2 * 60 + 45})
 				.text((d) => {return d.label});
-	
+
+	mymap.on('zoomend', function() {
+    getFeaturesInView(mymap);
+	});
 	
 
 });
