@@ -298,7 +298,7 @@ function plotBar() {
       .range([0, WIDTH])
       .padding([0.2]);
 
-  svg2.append("g")
+  svg2.append("g").style("font-size", "10px")
     .attr("transform", `translate(0, ${HEIGHT})`)
     .call(d3.axisBottom(X).tickSize(0));
 
