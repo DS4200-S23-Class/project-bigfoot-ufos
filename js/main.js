@@ -298,9 +298,9 @@ function plotBar() {
 		.enter()
 		.append("rect")
 			.attr("class", "bar-bf-active")
-			.attr("x", (d) => {return X(d.month) + xSubgroup.bandwidth() + 0.5})
+			.attr("x", (d) => {return X(d.month) + (xSubgroup.bandwidth() * 4) + 0.5})
 			.attr("y", (d) => {return Y(d.data.bf.count)})
-			.attr("width", xSubgroup.bandwidth())
+			.attr("width", xSubgroup.bandwidth() * 4)
 			.attr("height", (d) => {return height - Y(d.data.bf.count)})
 			.attr("fill", "orange");
 
@@ -311,7 +311,7 @@ function plotBar() {
 			.attr("class", "bar-ufo-active")
 			.attr("x", (d) => {return X(d.month)})
 			.attr("y", (d) => {return Y(d.data.ufo.count)})
-			.attr("width", xSubgroup.bandwidth())
+			.attr("width", xSubgroup.bandwidth() * 4)
 			.attr("height", (d) => {return height - Y(d.data.ufo.count)})
 			.attr("fill", "steelblue");
 
