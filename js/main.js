@@ -248,18 +248,7 @@ function plotBar() {
 
 	d3.select("#vis1").selectAll("*").remove();
 
-	// add title
-  d3.select("#vis1").append("svg")
-  	.attr("width", WIDTH)
-  	.attr("height", "50px")
-	  	.append("text")
-		  	.attr("x", MARGIN.left)
-		  	.attr("y", "25px")
-		  	.style("font-size", "20px")
-		  	.style("font-weight", "bold")
-		  	.style("margin", "10px")
-		  	.style("text-decoration", "underline")
-		  	.text("Number of Sightings by Month");
+	
 
 	// append the svg object to the body of the page
 	let svg2 = d3.select("#vis1")
