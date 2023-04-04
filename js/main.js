@@ -96,9 +96,11 @@ Promise.all([d3.csv("data/bigfoot.csv"),
 	console.log(files[1].slice(0, 10));
 
 	// initialize the map; center around usa
-	let mymap = L
-	  .map("map")
-	  .setView([38, -97], 4);
+	let mymap = L.map('map', {
+    zoomSnap: 0.25
+		}).setView([38, -97], 3.75);
+
+	mymap.options.minZoom = 3.75;
 
 	// map background 
 
@@ -174,9 +176,9 @@ Promise.all([d3.csv("data/bigfoot.csv"),
 
 	// create an svg element for the legend
 	svg = d3.select("#legend").append("svg")
-					.attr("width", 180)
-					.attr("height", 150);
-	
+					.attr("width", 600)
+					.attr("height", 50);
+
 	svg.append("text")
 				.attr("x", 20)
 				.attr("y", 35)
@@ -190,8 +192,8 @@ Promise.all([d3.csv("data/bigfoot.csv"),
 				.attr("class", (d) => {if (d.label == "Bigfoot Sighting") {return "bf-legend"}
 																else {return "ufo-legend"}})
 				.attr("r", 10)
-				.attr("cx", 30)
-				.attr("cy", (d, i) => {return (i + 1) / 2 * 60 + 40})
+				.attr("cx", (d, i) => {return (i + 1) * 150})
+				.attr("cy", 30)
 				.style("fill", "white")
 				.style("stroke", (d) => {return d.color})
 				.style("stroke-width", 2);
@@ -203,8 +205,8 @@ Promise.all([d3.csv("data/bigfoot.csv"),
 				.attr("id", (d) => {if (d.label == "Bigfoot Sighting") {return "bf-legend-filter"}
 																else {return "ufo-legend-filter"}})
 				.attr("r", 7)
-				.attr("cx", 30)
-				.attr("cy", (d, i) => {return (i + 1) / 2 * 60 + 40})
+				.attr("cx", (d, i) => {return (i + 1) * 150})
+				.attr("cy", 30)
 				.style("fill", (d) => {return d.color})
 				.on("click", function (e) {
 						filter(e, this);
@@ -215,8 +217,8 @@ Promise.all([d3.csv("data/bigfoot.csv"),
 	// use categories array to add text labels to the legend
 	svg.selectAll("labels").data(categories).enter()
 			.append("text")
-				.attr("x", 50)
-				.attr("y", (d, i) => {return (i + 1) / 2 * 60 + 45})
+				.attr("x", (d, i) => {return (i + 1) * 150 + 15})
+				.attr("y", 35)
 				.text((d) => {return d.label});
 
 	getFeaturesInView(mymap);
@@ -237,27 +239,27 @@ Promise.all([d3.csv("data/bigfoot.csv"),
 
 
 // set the dimensions and margins of the graph
-const MARGIN = {top: 10, right: 30, bottom: 50, left: 50},
-    WIDTH = 740 - MARGIN.left - MARGIN.right,
+const MARGIN = {top: 50, right: 30, bottom: 50, left: 50},
+    WIDTH = 730 - MARGIN.left - MARGIN.right,
     HEIGHT = 400 - MARGIN.top - MARGIN.bottom;
 
+// plot months vs sigthings
 function plotBar() {
 	Promise.all([d3.csv("data/bigfoot.csv"),
 			 d3.csv("data/ufos.csv"), 
 			 ]).then((files) => {
 
 	d3.select("#vis1").selectAll("*").remove();
-
 	
-
 	// append the svg object to the body of the page
 	let svg2 = d3.select("#vis1")
 			  .append("svg")
 			    .attr("width", WIDTH + MARGIN.left + MARGIN.right)
 			    .attr("height", HEIGHT + MARGIN.top + MARGIN.bottom)
+			    .style("float", "left")
 			  .append("g")
 			    .attr("transform",`translate(${MARGIN.left},${MARGIN.top})`);
-
+	
 	// gather month counts for bf and ufo
 	let monthsData = [{month: 'January', data: {bf: {count: 0, label: 'bigfoot'}, ufo: {count: 0, label: 'ufo'}}}, {month: 'February', data: {bf: {count: 0, label: 'bigfoot'}, ufo: {count: 0, label: 'ufo'}}}, 
 										{month: 'March', data: {bf: {count: 0, label: 'bigfoot'}, ufo: {count: 0, label: 'ufo'}}}, {month: 'April', data: {bf: {count: 0, label: 'bigfoot'}, ufo: {count: 0, label: 'ufo'}}}, 
@@ -305,6 +307,16 @@ function plotBar() {
     .attr("dy", "1em")
     .style("text-anchor", "middle")
     .text("Number of Sightings");
+
+  // add title
+  svg2.append("text")
+		  	.attr("x", WIDTH / 2)
+		  	.attr("y", 0 - (MARGIN.top / 2))
+		  	.attr("class", "title")
+		  	.style("text-anchor", "middle")
+		  	.style("margin", "10px")
+		  	.style("float", "left")
+		  	.text("Number of Sightings by Month");
 
   // Add Y axis
   const Y = d3.scaleLinear()
@@ -393,86 +405,3 @@ function plotBar() {
 };
 
 plotBar();
-
-// Parse the Data
-// d3.csv("data/bar.csv").then( function(data) {
-//   let categories = [{label: "Bigfoot Sighting", color: "orange"}, {label: "UFO Sighting", color: "steelblue"}];
-//   // List of subgroups = header of the csv files = soil condition here
-//   const subgroups = data.columns.slice(1)
-//   console.log(subgroups)
-//   // List of groups = species here = value of the first column called group -> I show them on the X axis
-//   const groups = data.map(d => d.month)
-
-//   console.log(groups)
-
-//   // Add X axis
-//   const x = d3.scaleBand()
-//       .domain(groups)
-//       .range([0, width])
-//       .padding([0.2]); 
-
-//   svg2.append("g")
-//     .attr("transform", `translate(0, ${height})`)
-//     .call(d3.axisBottom(x).tickSize(0));
-
-
-//   // Add X-axis label
-//   svg2.append("text")
-//     .attr("transform", `translate(${width / 2}, ${height + 30})`)
-//     .style("text-anchor", "middle")
-//     .text(xAxisLabel);
-
-
-//   // Add Y axis
-//   const y = d3.scaleLinear()
-//     .domain([0, 120])
-//     .range([ height, 0 ]);
-//   svg2.append("g")
-//     .call(d3.axisLeft(y));
-
-
-
-//   // Another scale for subgroup position?
-//   const xSubgroup = d3.scaleBand()
-//     .domain(subgroups)
-//     .range([0, x.bandwidth()])
-//     .padding([0.05]);
-
-//   // color palette = one color per subgroup
-//   const color = d3.scaleOrdinal()
-//     .domain(subgroups)
-//     .range(['orange','steelblue']);
-
-
-//   // color palette = one color per subgroup
-//   const clas = d3.scaleOrdinal()
-//     .domain(subgroups)
-//     .range(['bar-bf-active','bar-ufo-active']);
-
-// 	  // color palette = one color per subgroup
-//  const i_d = d3.scaleOrdinal()
-// 	  .domain(subgroups)
-// 	  .range(['Bigfoot','UFO']);
-	  
-//   // Show the bars
-//   svg2.append("g")
-//     .selectAll("g")
-//     // Enter in data = loop group per group
-//     .data(data)
-//     .join("g")
-//       .attr("transform", d => `translate(${x(d.month)}, 0)`)
-//     .selectAll("rect")
-//     .data(function(d) { return subgroups.map(function(key) { return {key: key, value: d[key]}; }); })
-//     .join("rect")
-//       .attr("x", d => xSubgroup(d.key))
-//       .attr("y", d => y(d.value))
-//       .attr("width", xSubgroup.bandwidth())
-//       .attr("height", d => height - y(d.value))
-//       .attr("fill", d => color(d.key))
-// 	  .attr("class", d => clas(d.key))
-// 	  .attr("id", "bar");	  
-
-// });
-
-
-

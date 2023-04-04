@@ -9,12 +9,20 @@ body {
 }
 
 /* flexboxes for diff parts of the vis */
-.visualization {
-    max-height: 100%;
-	max-width: 100%;
+.row {
+    height: 85vh;
 	display: flex;
 	flex-direction: row;
-	flex-wrap: wrap;
+    border: 1px solid #ccc;
+    position: relative;
+}
+
+.col {
+    display: flex;
+    flex-direction: column;
+    width: 50vw;
+    height: 85vh;
+    align-items: center;
 }
 
 .bf-legend {
@@ -68,7 +76,6 @@ makes the points grey */
     cursor: pointer;
 }
 
-
 .bar-bf-inactive {
     fill: grey !important;
     stroke: none;
@@ -83,24 +90,61 @@ makes the points grey */
 
 /* legend setup */
 #legend {
-    height: 150px;
-    border: 2px solid black;
-    width: 215px;
-    margin: 0 auto;
-    margin-top: 50px;
-    margin-bottom: 50px;
+    height: 60px;
+    border: 1px solid #ccc;
+    margin-top: 20px;
+    margin-bottom: 10px;
+    position: relative;
 }
 
 /* setup for the map and vis1 */
 #map {
-    max-width: 75%;
-    width: 750px;
+    width: 45vw;
     height: 450px;
+    margin-top: 35px;
 }
 
 /*center vis1 */
 #vis1 {
-    margin: 0 auto;
+    margin-left: 10px;
+    margin-top: 15px;
+}
+
+/* decoration */
+#bf-im-row {
+    display: flex;
+    flex-direction: row;
+    position: absolute;
+    left: 0;
+    bottom: 20vh;
+}
+
+#ufo-im-row {
+    position: absolute;
+    right: 18vw;
+    bottom: 15vh;
+}
+
+#bf-im {
+    width: 40vw;
+    margin-left: 30px;
+    margin-top: 20px;
+    position: absolute;
+    opacity: 0.6;
+}
+
+#ufo-im {
+    width: 15vw;
+    position: absolute;
+    opacity: 0.6;
+    transform: rotate(15deg);
+}
+
+/* plot titles */
+.title {
+    text-decoration: underline;
+    font-size: 20px;
+    font-weight: bold;
 }
 
 .rect{
@@ -109,11 +153,11 @@ makes the points grey */
 
 /* scroll box */
 #scroll-box{
-    height:300px;
-    width:400px;
-    max-width: 25%;
-    margin: 50px;
-    padding: 20px;
+    height:25vh;
+    width:45vw;
+    background-color: white;
+    padding: 10px;
+    margin-top: auto;
     border:1px solid #ccc;
     font:24px Diastema Regular;
     overflow:auto;
