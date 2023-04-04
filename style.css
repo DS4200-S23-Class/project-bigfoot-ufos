@@ -14,7 +14,6 @@ body {
 	display: flex;
 	flex-direction: row;
     border: 1px solid #ccc;
-    position: relative;
 }
 
 .col {
@@ -23,6 +22,15 @@ body {
     width: 50vw;
     height: 85vh;
     align-items: center;
+}
+
+#map-col {
+    display: flex;
+    flex-direction: column;
+    width: 50vw;
+    height: 85vh;
+    align-items: center;
+    position: relative;
 }
 
 .bf-legend {
