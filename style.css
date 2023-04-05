@@ -161,9 +161,10 @@ makes the points grey */
 
 /* scroll box */
 #scroll-box{
-    max-height: 40vh;
+/*    max-height: 40vh;
     min-height:25vh;
-    width:45vw;
+*/    width:45vw;
+    height: calc(78vh - 400px);
     background-color: white;
     padding: 10px;
     margin-top: auto;
