@@ -16,6 +16,11 @@ body {
     border: 1px solid #ccc;
 }
 
+video {
+    width: 35%;
+    height: auto;
+  }
+
 .col {
     display: flex;
     flex-direction: column;
